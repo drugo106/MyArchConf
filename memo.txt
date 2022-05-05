@@ -1,0 +1,158 @@
+## PACMAN 
+
+- disinstallare pacchetto e dipendenze:
+  sudo pacman -Rcns <pacchetto>
+
+- orfani
+  sudo pacman -Qdt
+
+- disinstallare orfani e le loro dipendenze
+  sudo pacman -Rs $(pacman -Qdtq)
+
+- mostra pacchetti explicitamente installati da me
+  sudo pacman -Qqe
+
+- mostrare infrmazioni di un pacchetto
+  sudo pacman -Qi <pacchetto>
+
+- mostrare file di un pacchetto
+  sudo pacman -Ql <pacchetto>	
+
+## GENERALI
+
+- contiene i programmi eseguiti all'avvio
+  ~/.xinit
+  ~/.xsession
+
+- grub configuration file:
+  /etc/default/grub
+
+- grub update command:
+  sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+- driver audio
+  alsamixer
+
+- ottenere informazioni sua una finestra: 
+  xwininfo
+
+- ottenere class name di una finestra:
+  xprop | grep WM_CLASS
+
+- le icone ecc del daemon delle notifiche si dovrebbe trovare in:
+  /usr/share/
+
+- il servizio delle notifiche è:
+  /usr/share/dbus-1/services/org.freedesktop.Notifications.service
+
+- picom configuration location (per settaggi come vsync ed altro):
+  /etc/xdg/picom.conf
+
+- comando per ottenere informazioni sui tasti premuti:
+  xev
+
+- decomprimere file .tar.gz:
+  tar xvfz [FILE]
+
+- comprimere file .tar.gz
+  tar -zcvf archivio.tar.gz <dir o file>
+
+- file manager commandline:
+  flm
+
+- meteo:
+  curl http://wttr.in
+
+- comando per mostrare le schede video e driver:
+  sudo lshw -C Display
+
+- comando per mostrare driver video in uso:
+  lspci -k | grep -A 2 -E "(VGA|3D)"
+
+- comando per mostrare proprietà di un device e quello per modificarle ( 10 per il touchpad)
+  xinput list-props <number device>
+  xinput set-prop <number device> <property> <val ...>
+
+- chiudere applicazione:
+  xkill 
+
+- sistema orologio
+  sudo timedatectl set-local-rtc 1 --adjust-system-clock 
+
+- errore: failed to synchronize all databases (impossibile bloccare il database)
+  sudo rm /var/lib/pacman/db.lck     oppure lo rinomini
+
+- start VPN
+  sudo openfortivpn -c /etc/openfortivpn/config         pass: DG/u6hZ86xli+Q
+
+- pacman history
+  cat /var/log/pacman.log
+
+- installazione manuale pacchetti (solo se è presente un PKGBUILD)
+  makepkg -si
+
+- aggiustare pacman se ci sono porblemi di chiavi 
+- sudo rm -R /var/lib/pacman/sync
+  sudo su 
+  pacman-key --init
+  pacman-key --populate archlinux
+  pacman-key --refresh-keys
+  pacman -Syy
+  pacman -Syu
+
+- controllare pacchetti corrotti:
+  ghc-pkg check
+
+- disinstallare cuda:
+  cuda
+  cuda-toolkit
+  cudnn
+
+- disabilitare dmesg console-logs:
+  sudo dmesg -D
+
+- stato batteria:
+  upower -i /org/freedesktop/UPower/devices/battery_BAT0
+
+- mostrare stato moduli linux kernel
+  lsmod
+
+- sovrascrivere pyc file creati non tracciati, ovvero quando ottengo un errore simile: libxml2: /usr/lib/python3.10/site-packages/__pycache__/drv_libxml2.cpython-310.opt-1.pyc exists in filesystem
+  sudo pacman -Syu --overwrite /usr/lib/python3.10/site-packages/__pycache__/\*
+
+- attivare secondo monitor (eDP-1 è quello principale del pc, HDMI-2 è quello esterno)
+  xrandr --output eDP1 --auto --output HDMI2 --mode 1366x768 --right-of eDP1
+  xrandr --output HDMI2 --mode 1366x768 --right-of eDP1
+
+- jupyter su volta
+  jupyter notebook --no-browser --port=2222
+  ssh -N -f -L localhost:3000:localhost:2222 colombo@volta.di.unimi.it
+
+- peso file di una cartella
+  du -hd 1
+
+- uninstall anaconda
+  conda clean --all
+  rm -rf miniconda3/
+
+- gestore video driver
+  v4l2-ctl
+
+- sbloccare user dopo login fallito:
+  faillock --reset --user lorenzo
+
+- configurazione fail lock user (contiene il path della cartella che contiene indicazione sugli user bloccati)::
+  /etc/security/faillock.conf
+
+- stampa log sistema degli ultimi 30 minuti
+  journalctl --since "30 min ago"
+
+- mostra informazioni sugli ELF file (-l -> program header):
+  readelf
+  readelf -l
+
+- stampare oggeti (librerie) condivise di un eseguibile
+  ldd
+
+- mostrare pacchetti che contengono un determinto file
+  pkgfile <file> 
