@@ -13,6 +13,7 @@ import System.Exit
 import Graphics.X11.ExtraTypes.XF86
 import XMonad.Hooks.DynamicLog
 import XMonad.Actions.CycleWS
+import XMonad.Hooks.WallpaperSetter
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -52,6 +53,7 @@ myModMask       = mod1Mask
 --
 myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 
+
 -- Border colors for unfocused and focused windows, respectively.
 --
 myNormalBorderColor  = "#000000"
@@ -74,8 +76,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --, ((0, 0xffc9), spawn "pactl set-sink-mute @DEFAULT_SINK@ false && pactl set-sink-volume @DEFAULT_SINK@ +10% && notify-send -t 500 $(awk -F\'[][]\' \'/dB/ { print $2     }\' <(amixer sget Master)) --icon=audio-volume-high")
     
     , ((0, 0xffc7), spawn "amixer set Master toggle")
-    , ((0, 0xffc8), spawn "amixer set Master 5%- unmute")
-    , ((0, 0xffc9), spawn "amixer set Master 5%+ unmute")
+    , ((0, 0xffc8), spawn "amixer set Master 5%- unmute ; play ~/SoundEffect/ping-volume.flac")
+    , ((0, 0xffc9), spawn "amixer set Master 5%+ unmute ; play ~/SoundEffect/ping-volume.flac")
     --xF86XK_AudioMute
     --xF86XK_AudioLowerVolume),
     --xF86XK_AudioRaiseVolume)
@@ -97,6 +99,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     
     -- firefox
     , ((modm, xK_f), spawn "firefox")
+    
+    -- connect headset
+    , ((modm, xK_i), spawn "blt")    
 
     -- emacs
     , ((modm, xK_g), spawn "emacs")
@@ -104,7 +109,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- screen lock
     --, ((mod4Mask, 0x6c), spawn "slock")
     , ((mod4Mask, 0x6c), spawn "lock") --comando mio in /usr/bin
-
+    
     -- a basic CycleWS setup
 
     , ((modm,               xK_Right),  nextWS)
@@ -175,7 +180,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
     -- Activate external monitor
-    , ((modm              , xK_d     ), spawn "xrandr --output HDMI2 --mode 1366x768 --right-of eDP1")
+    , ((modm              , xK_d     ), spawn "xrandr --output HDMI-2 --mode 1366x768 --right-of eDP-1")
 
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
