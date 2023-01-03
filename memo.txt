@@ -1,13 +1,16 @@
 ## PACMAN 
 
-- disinstallare pacchetto e dipendenze:
-  sudo pacman -Rcns <pacchetto>
+- To remove a package, its dependencies and all the packages that depend on the target package:
+  sudo pacman -Rsu <pacchetto>
+
+- To remove a package and its dependencies which are not required by any other installed package: 
+  sudo pacman -Rs
 
 - orfani
   sudo pacman -Qdt
 
 - disinstallare orfani e le loro dipendenze
-  sudo pacman -Rs $(pacman -Qdtq)
+  sudo pacman -Rns $(pacman -Qdtq)
 
 - mostra pacchetti explicitamente installati da me
   sudo pacman -Qqe
@@ -17,6 +20,12 @@
 
 - mostrare file di un pacchetto
   sudo pacman -Ql <pacchetto>	
+
+- mostra tutti i pacchetti ordinati per dimensione
+  LC_ALL=C pacman -Qi | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | sort -h
+
+- mostrare pacchetti che contengono un determinto file
+  pkgfile <file> 
 
 ## GENERALI
 
@@ -78,6 +87,7 @@
 
 - sistema orologio
   sudo timedatectl set-local-rtc 1 --adjust-system-clock 
+  timedatectl help
 
 - errore: failed to synchronize all databases (impossibile bloccare il database)
   sudo rm /var/lib/pacman/db.lck     oppure lo rinomini
@@ -121,15 +131,15 @@
   sudo pacman -Syu --overwrite /usr/lib/python3.10/site-packages/__pycache__/\*
 
 - attivare secondo monitor (eDP-1 è quello principale del pc, HDMI-2 è quello esterno)
-  xrandr --output eDP1 --auto --output HDMI2 --mode 1366x768 --right-of eDP1
-  xrandr --output HDMI2 --mode 1366x768 --right-of eDP1
+  xrandr --output eDP-1 --auto --output HDMI-2 --mode 1366x768 --right-of eDP-1
+  xrandr --output HDMI-2 --mode 1366x768 --right-of eDP-1
 
 - jupyter su volta
   jupyter notebook --no-browser --port=2222
   ssh -N -f -L localhost:3000:localhost:2222 colombo@volta.di.unimi.it
 
 - peso file di una cartella
-  du -hd 1
+  du -hd 1 | sort -hk 1
 
 - uninstall anaconda
   conda clean --all
@@ -154,5 +164,15 @@
 - stampare oggeti (librerie) condivise di un eseguibile
   ldd
 
-- mostrare pacchetti che contengono un determinto file
-  pkgfile <file> 
+- reflector:
+  sudo reflector -c Italy -a 6 --sort rate --save /etc/pacman.d/mirrorlist
+  sudo reflector --country Italy --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+
+- tutte le info generali del sistem 
+  inxi -Fz
+
+- qemu con arch
+  qemu-img create -f qcow2 img 4G     #crea immagine
+  qemu-system-x86_64 -enable-kvm -m 4096 -cdrom archlinux-2022.09.03-x86_64.iso -boot order=d -hda img
+  qemu-system-x86_64 -smp 2 -m 2G arch.img
+  vncviewer localhost:5900

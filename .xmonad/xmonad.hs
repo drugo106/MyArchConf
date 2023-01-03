@@ -76,8 +76,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --, ((0, 0xffc9), spawn "pactl set-sink-mute @DEFAULT_SINK@ false && pactl set-sink-volume @DEFAULT_SINK@ +10% && notify-send -t 500 $(awk -F\'[][]\' \'/dB/ { print $2     }\' <(amixer sget Master)) --icon=audio-volume-high")
     
     , ((0, 0xffc7), spawn "amixer set Master toggle")
-    , ((0, 0xffc8), spawn "amixer set Master 5%- unmute ; play ~/SoundEffect/ping-volume.flac")
-    , ((0, 0xffc9), spawn "amixer set Master 5%+ unmute ; play ~/SoundEffect/ping-volume.flac")
+    , ((0, 0xffc8), spawn "amixer set Master 5%- unmute ; play -v 0.3 ~/SoundEffect/ping-volume.flac")
+    , ((0, 0xffc9), spawn "amixer set Master 5%+ unmute ; play -v 0.3 ~/SoundEffect/ping-volume.flac")
     --xF86XK_AudioMute
     --xF86XK_AudioLowerVolume),
     --xF86XK_AudioRaiseVolume)
@@ -101,7 +101,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_f), spawn "firefox")
     
     -- connect headset
-    , ((modm, xK_i), spawn "blt")    
+    , ((modm, xK_i), spawn "terminator -e 'blt'")    
 
     -- emacs
     , ((modm, xK_g), spawn "emacs")
@@ -130,6 +130,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
        ,((modm,               xK_p     ), spawn "rofi -modi drun -show drun -show-icons")
     -- launch gmrun
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
+    
+    -- spcaefm (file manager)
+    , ((modm,               xK_n     ), spawn "spacefm")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -141,7 +144,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size
-    , ((modm,               xK_n     ), refresh)
+    --, ((modm,               xK_n     ), refresh)
 
     -- Move focus to the next window
     , ((modm,               xK_Tab   ), windows W.focusDown)
@@ -282,7 +285,10 @@ myManageHook = composeAll
     , className =? "Gnome-screenshot" --> doFloat
     , className =? "jetbrains-studio" --> doFloat
     , className =? "Calculator"       --> doFloat
-   -- , className =? "Steam" <&&> title =? "Friends List" --> doFloat
+    , className =? "Spacefm"          --> doFloat
+    , className =? "Qalculate-gtk"    --> doFloat
+    , className =? "Steam" <&&> title =? "Friends List" --> doFloat
+    , className =? "Steam" --> doFloat
     , resource  =? "desktop_window"   --> doIgnore
     , resource  =? "kdesktop"         --> doIgnore ]
 
